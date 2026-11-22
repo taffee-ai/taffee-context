@@ -1,0 +1,2 @@
+# Install into an isolated Python 3.12 environment on the execution host.
+graphifyy==0.9.51

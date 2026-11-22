@@ -1,0 +1,29 @@
+# Dockerfile.qwen: Standalone recipe for Qwen-2.5-Coder-0.5B HTTP Sidecar service.
+# Builds on the base server image produced from the repository's Dockerfile.
+# Resource requirements (DEF-038): ~2.15 GiB resident RSS. Requires >= 2.5 GB container
+# memory limit (--memory 2.5g --memory-swap 2.5g). Container is OOM-killed under a 1.5 GB limit.
+ARG BASE_IMAGE=taffee-mcp:test-m5-official
+FROM ${BASE_IMAGE}
+
+ENV HF_HOME=/hf
+ENV TORCH_THREADS=2
+ENV QWEN_PORT=8000
+ENV HF_HUB_OFFLINE=0
+
+# Fetch pinned checkpoint revision at build time with snapshot_download (self-contained)
+RUN python3 -c "\
+from huggingface_hub import snapshot_download; \
+snapshot_download(repo_id='Qwen/Qwen2.5-Coder-0.5B-Instruct', revision='ea3f2471cf1b1f0db85067f1ef93848e38e88c25', cache_dir='/hf/hub')\
+"
+RUN if [ -d /hf/models--Qwen--Qwen2.5-Coder-0.5B-Instruct ] && [ ! -d /hf/hub/models--Qwen--Qwen2.5-Coder-0.5B-Instruct ]; then ln -s /hf/models--Qwen--Qwen2.5-Coder-0.5B-Instruct /hf/hub/models--Qwen--Qwen2.5-Coder-0.5B-Instruct || mv /hf/models--Qwen--Qwen2.5-Coder-0.5B-Instruct /hf/hub/; fi
+
+ENV HF_HUB_OFFLINE=1
+
+WORKDIR /app
+COPY qwen_service.py /app/
+
+# Build-time verification: check imports
+RUN python3 -c "import torch, transformers, qwen_service; print('BUILD OK: Qwen sidecar service verified')"
+
+EXPOSE 8000
+CMD ["python3", "/app/qwen_service.py"]

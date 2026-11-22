@@ -1,0 +1,5 @@
+# Embedding runtime for the semantic code layer. Install into the same Python 3.12 image as Graphify.
+# transformers must stay on 4.57.1: the model's remote code calls a function removed in transformers 5.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.8.0+cpu
+transformers==4.57.1

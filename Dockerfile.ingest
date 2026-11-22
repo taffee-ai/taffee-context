@@ -1,0 +1,8 @@
+# ingestion-service: HTTP job queue that runs Graphify, chunk-embed, verify and publish.
+FROM taffee-base:dev
+COPY package.json package-lock.json tsconfig.json ./
+RUN npm ci
+COPY context ./context
+ENV INGEST_PORT=8790 INGEST_QUEUE_FILE=/state/jobs.sqlite INGEST_WORKSPACE=/state/work
+EXPOSE 8790
+CMD ["npm", "run", "service"]

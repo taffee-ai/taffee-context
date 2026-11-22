@@ -1,0 +1,7 @@
+.git
+node_modules
+docs
+build.log
+context/testing
+context/serving/mcp/tests
+context/serving/mcp/bench

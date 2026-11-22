@@ -1,0 +1,37 @@
+# Dockerfile.jev: Standalone, self-contained recipe for Laya JEV-enabled MCP server (mode=turbo+jev).
+# Builds on the base official server image produced from the repository's Dockerfile.
+# Usage:
+#   docker build -t taffee-mcp:test-m5-official -f context/serving/mcp/Dockerfile context/serving/mcp
+#   docker build --build-arg BASE_IMAGE=taffee-mcp:test-m5-official -t taffee-mcp:test-m7-official -f context/serving/mcp/Dockerfile.jev context/serving/mcp
+ARG BASE_IMAGE=taffee-mcp:test-m5-official
+FROM ${BASE_IMAGE}
+
+ENV HF_HOME=/hf
+ENV HF_HUB_OFFLINE=0
+ENV LAYA_REVISION=reviewed
+ENV ENABLE_LAYA_JEV=true
+
+# Install laya 0.3.22 without heavy dependencies (torch and transformers already installed in base image)
+RUN pip install --no-cache-dir --no-deps "laya==0.3.22"
+
+# Fetch pinned checkpoint revision at build time with snapshot_download (self-contained, no external container copies)
+RUN python3 -c "\
+from huggingface_hub import snapshot_download; \
+import laya; \
+rev = laya.PINNED_REVISIONS.get('convaiinnovations/laya', '55cf4c4ebb4ebe31b2550e8bdf3bd21b99753851'); \
+snapshot_download(repo_id='convaiinnovations/laya', revision=rev, cache_dir='/hf')\
+"
+RUN if [ -d /hf/models--convaiinnovations--laya ] && [ ! -d /hf/hub/models--convaiinnovations--laya ]; then ln -s /hf/models--convaiinnovations--laya /hf/hub/models--convaiinnovations--laya || mv /hf/models--convaiinnovations--laya /hf/hub/; fi
+
+# Set offline mode for container runtime
+ENV HF_HUB_OFFLINE=1
+
+WORKDIR /app
+COPY turbo_jev.py turbo_builder.py server.py /app/
+RUN cp /app/server.py /server.py
+
+# Build-time verification: check imports and router readiness
+RUN python3 -c "import laya, turbo_jev, turbo_builder; print('BUILD OK: laya and turbo_jev imported successfully')"
+
+EXPOSE 8765
+CMD ["python", "/server.py"]

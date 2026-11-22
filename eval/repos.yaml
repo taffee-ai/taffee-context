@@ -1,0 +1,11 @@
+# Public repositories used by the evaluation, pinned to exact commits. Fetched by the harness setup, never vendored.
+repos:
+  - id: fastapi
+    url: https://github.com/fastapi/fastapi.git
+    commit: 913c68062c8990ea2c00d856d81b7e2383485155
+    licence: MIT
+  - id: nestjs
+    url: https://github.com/nestjs/nest.git
+    commit: 2731c18054fb348779311d81e4e20949e313be78
+    licence: MIT
+    note: same commit and questions as the October 2026 pilot (docs/design/003_context_mcp_turbo/m9/tasks-nest.json)

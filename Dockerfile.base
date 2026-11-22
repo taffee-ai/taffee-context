@@ -1,0 +1,25 @@
+# taffee-base: the one shared base for every Context image.
+# Node 20 and npm, Python 3.12, Graphify (pinned), the embedding stack, and the pinned Jina model baked in.
+# Used by: Dockerfile.ingest (ingestion-service), context/serving/mcp/Dockerfile (mcp-service), and test runs.
+# Build once: docker build -f Dockerfile.base -t taffee-base:dev .
+FROM node:20-bookworm AS node
+
+FROM python:3.12-slim
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+COPY context/ingestion/extract/code/requirements.txt /tmp/requirements-graphify.txt
+COPY context/ingestion/embeddings/requirements.txt /tmp/requirements-embed.txt
+RUN pip install --no-cache-dir -r /tmp/requirements-graphify.txt -r /tmp/requirements-embed.txt
+
+# Bake the pinned model. Keep these revisions equal to SEMANTIC_CONFIG in context/ingestion/chunks/chunker.ts (a unit test checks).
+ENV HF_HOME=/hf
+COPY context/ingestion/embeddings/prefetch_model.py /tmp/prefetch_model.py
+RUN python /tmp/prefetch_model.py --model jinaai/jina-embeddings-v2-base-code \
+      --model-revision 516f4baf13dec4ddddda8631e019b5737c8bc250 \
+      --code-repo jinaai/jina-bert-v2-qk-post-norm --code-revision 3baf9e3ac750e76e8edd3019170176884695fb94
+ENV HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+WORKDIR /app

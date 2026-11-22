@@ -1,0 +1,8 @@
+#!/bin/bash
+# Interactive shell client for the code-graph MCP server. Keeps one session open and accepts commands at a prompt.
+#   taffee-mcp-interactive
+# Set MCP_URL, MCP_TOKEN and (for self-signed certs) MCP_INSECURE=1.
+HERE=$(cd "$(dirname "$0")" && pwd)
+PY="$HERE/../../../.venv/bin/python"
+[ -x "$PY" ] || PY=python3
+exec "$PY" "$HERE/client.py" shell "$@"

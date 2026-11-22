@@ -1,0 +1,13 @@
+{
+  "repo": "nest-test",
+  "source": "nestjs/nest, single-commit copy",
+  "commit": "2731c18054fb348779311d81e4e20949e313be78",
+  "note": "Known answers were read from the code with grep. Correct = all required files and symbols named; partial = right file but wrong or missing symbol; wrong = wrong file. Distractor: sample/* folders contain files with the same names as the library files.",
+  "tasks": [
+    {"id": "N1", "question": "Which file defines the @Injectable() decorator? Give the file path.", "required_files": ["packages/common/decorators/core/injectable.decorator.ts"]},
+    {"id": "N2", "question": "Which class catches all exceptions by default, in which file, and what is the name of its method that handles an exception?", "required_files": ["packages/core/exceptions/base-exception-filter.ts"], "required_symbols": ["BaseExceptionFilter", "catch"]},
+    {"id": "N3", "question": "Which file implements the ValidationPipe used to validate request data in the framework itself (not a sample app), and which method validates a value?", "required_files": ["packages/common/pipes/validation.pipe.ts"], "required_symbols": ["transform"]},
+    {"id": "N4", "question": "Which abstract class do microservice clients extend, and in which file is it defined?", "required_files": ["packages/microservices/client/client-proxy.ts"], "required_symbols": ["ClientProxy"]},
+    {"id": "N5", "question": "Which file contains the NestFactory create method that bootstraps an application? Give the file path and the method name.", "required_files": ["packages/core/nest-factory.ts"], "required_symbols": ["create"]}
+  ]
+}

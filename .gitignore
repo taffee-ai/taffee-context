@@ -1,0 +1,62 @@
+# Local planning notes; the public roadmap is docs/roadmap.md in taffee-core.
+# slop/ folders are local brainstorming only and are never committed, at any depth.
+slop/
+
+# Keep these notes private if they are recreated at the docs root.
+/docs/CONTEXT-EXTRACTION-PLAN.md
+/docs/IMPLEMENTED-FEATURES-BY-PILLAR.md
+
+# Local dependencies, credentials, and generated graph artifacts.
+/node_modules/
+/.venv/
+/.env
+/graphify-out/
+/context/graphify-out/
+/context/*.snapshot.json
+
+# Python cache and sensitive files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Environment and secrets (should never be committed)
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.pfx
+.aws/
+.ssh/
+.netrc
+
+# IDE and OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+
+# scratch/ — local working notes, never committed
+scratch/
+
+# Local agent tool state
+.claude/
+
+# mailbox/ — agent coordination state (maildepot). Local runtime data,
+# never committed, including its README and rules files.
+mailbox/
+# .maildepot/ — maildepot's lib/, copied in by init.mjs so agents run it
+# from inside the workspace. Regenerated on every init; never committed.
+.maildepot/
+
+# Agent instruction files and tool state — local only, never committed.
+AGENTS.md
+CLAUDE.md
+.codex/

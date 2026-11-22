@@ -1,0 +1,7 @@
+#!/bin/bash
+# Runs the client with the repository's virtual environment if there is one:
+#   python3 -m venv .venv && .venv/bin/pip install "mcp==1.16.0" httpx      (from the repository root)
+HERE=$(cd "$(dirname "$0")" && pwd)
+PY="$HERE/../../../.venv/bin/python"
+[ -x "$PY" ] || PY=python3
+exec "$PY" "$HERE/client.py" "$@"
