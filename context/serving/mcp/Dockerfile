@@ -4,7 +4,7 @@
 FROM taffee-base:dev
 RUN apt-get update -qq && apt-get install -y -qq --no-install-recommends openssl \
     && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir "mcp==1.16.0" "pydantic==2.13.5" "graphifyy==0.9.51" "neo4j>=5.28,<6"
+    && pip install --no-cache-dir "mcp==1.30.0" "pydantic==2.13.5" "graphifyy==0.9.51" "neo4j>=5.28,<6"
 WORKDIR /app
 COPY context/serving/mcp/server.py context/serving/mcp/client.py context/serving/mcp/turbo_builder.py context/serving/mcp/turbo_data.py context/serving/mcp/turbo_git.py context/serving/mcp/turbo_knapsack.py context/serving/mcp/turbo_scorer.py context/serving/mcp/turbo_distiller.py /app/
 COPY python/taffee_context /app/taffee_context

@@ -15,7 +15,7 @@ It installs or downloads them at build or run time, under their own licenses.
   Local embedding model for semantic chunks.
 - Neo4j Community Edition 5.26, GPL-3.0, run as a separate container,
   not distributed here. Neo4j drivers: Apache-2.0.
-- Model Context Protocol Python SDK (mcp 1.16.0), MIT
+- Model Context Protocol Python SDK (mcp 1.30.0), MIT
 - Optional, off by default (experimental, see docs/design/003_context_mcp_turbo/README.md):
   - Laya 0.3.22 (convaiinnovations), Apache-2.0
   - Qwen2.5-Coder-0.5B-Instruct, Apache-2.0

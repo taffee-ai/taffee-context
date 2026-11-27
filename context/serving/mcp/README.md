@@ -45,7 +45,7 @@ and swap off (`--memory 2g --memory-swap 2g`).
 ## Command-line clients
 
 `taffee-mcp` and `taffee-mcp-interactive` are wrappers around `client.py`, a command-line client supporting one-shot and interactive queries. They need the `mcp` and `httpx` packages; the wrappers use the repository's `.venv` if there is one
-(`python3 -m venv .venv && .venv/bin/pip install "mcp==1.16.0" httpx`).
+(`python3 -m venv .venv && .venv/bin/pip install "mcp==1.30.0" httpx`).
 
 **One-shot commands** with `taffee-mcp`:
 ```
