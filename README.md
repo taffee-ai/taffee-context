@@ -127,7 +127,7 @@ The tests and the service are run on the execution host, in the container descri
 
 To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
-AI coding tools used across this codebase: Claude, Codex, Antigravity.
+**How Taffee is built.** Taffee began in August 2026 and has grown steadily since. Its authors have spent that time building the harness, testing ideas against real use and taking feedback from people in the industry. We write the code with AI coding tools (Claude, Codex and Antigravity) across every repository in [taffee-ai](https://github.com/taffee-ai). The architecture is worked out by people, together with those tools.
 
 ## Licence
 
