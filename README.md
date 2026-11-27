@@ -127,6 +127,8 @@ The tests and the service are run on the execution host, in the container descri
 
 To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
+AI coding tools used across this codebase: Claude, Codex, Antigravity.
+
 ## Licence
 
 Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
