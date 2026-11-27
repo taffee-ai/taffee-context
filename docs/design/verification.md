@@ -12,7 +12,7 @@ Images: `Dockerfile.base` (`taffee-base:dev`: Node 20.20.2, Python 3.12.15, git,
 | TypeScript, no database | `npm test` | 41 tests: 31 pass, 10 skipped (need the database), 0 fail |
 | TypeScript, with database | `TAFFEE_NEO4J_TEST=1 npm test` | 41 of 41 pass |
 | Python storage, with database | `TAFFEE_NEO4J_TEST=1 python -m pytest python/tests` | 33 of 33 pass |
-| MCP unit tests | `python -m pytest tests/test_turbo_distiller.py tests/test_turbo_jev.py tests/test_turbo_units.py tests/test_cli_pack.py` (in `taffee-mcp:dev`) | 68 of 68 pass |
+| MCP unit tests | `python -m pytest tests/test_turbo_distiller.py tests/test_turbo_jev.py tests/test_turbo_units.py tests/test_cli_pack.py tests/test_session_binding.py` (in `taffee-mcp:dev`) | 75 of 75 pass (2026-11-27, mcp 1.30.0) |
 | Token script | `gen_tokens.sh` with and without caller names | default callers `agent-1 agent-2 test`; custom names written; existing file not overwritten |
 
 ## Public repositories (2026-11-14)

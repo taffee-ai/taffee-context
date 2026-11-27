@@ -84,6 +84,8 @@ history; use `MCP_TOKEN` or `--token-file`.
 - HTTPS with a self-signed certificate (set `MCP_CERT_IPS` for extra addresses). On a real deployment terminate TLS at a load
   balancer with a managed certificate.
 - One token per caller, clear text on purpose for now; revoke one by deleting its line and restarting.
+- Each MCP session is bound to the caller that opened it: a request on another caller's session gets 404, as for an
+  unknown session. At most `MAX_SESSIONS` (10,000) sessions are tracked; the oldest are forgotten first.
 - Every call is logged (caller, tool, duration, ok/refused/error), rate-limited per caller and time-limited. Exceptions that
   were not deliberately raised are replaced with a generic message before leaving the process.
 - Keep Neo4j's own ports off the network; only this server knows the Neo4j password.

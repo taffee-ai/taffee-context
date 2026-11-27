@@ -485,22 +485,35 @@ def assemble_context_pack(repo: str, task: str, max_tokens: int = 4000, commit: 
 
 
 # ---------------------------------------------------------------- auth + serve
+MAX_SESSIONS = int(os.environ.get("MAX_SESSIONS", "10000"))
+
+
 class BearerAuth:
     """Pure ASGI wrapper: every request needs `Authorization: Bearer <token>`, except /healthz.
     On success, sets the caller's name (never the token) in a contextvar the whole call chain can read,
-    for the call log and the rate limit -- see `guarded` above."""
+    for the call log and the rate limit -- see `guarded` above.
+
+    It also binds each MCP session to the caller that created it. The SDK routes a request to a session by the
+    `mcp-session-id` header alone and cannot know who the caller is, because authentication happens here, outside
+    it. So the session id returned to a caller is recorded with that caller's name, and a request carrying a session
+    id is passed on only when it comes from the same caller. Anything else gets 404, the reply the MCP spec gives
+    for an unknown session, so it does not reveal that the session exists. The record is dropped when the owner
+    ends the session (DELETE); the table keeps at most MAX_SESSIONS records and forgets the oldest first."""
 
     def __init__(self, app):
         """Wrap the ASGI application."""
         self.app = app
+        self.owners = OrderedDict()  # session id (bytes) -> caller name
 
     async def __call__(self, scope, receive, send):
-        """Answer /healthz. Reject requests without a known bearer token with 401; pass the rest on."""
+        """Answer /healthz. Reject requests without a known bearer token with 401, and requests on a session that
+        another caller owns with 404; pass the rest on."""
         if scope["type"] != "http":
             return await self.app(scope, receive, send)
         if scope["path"] == "/healthz":
             return await self._reply(send, 200, b"ok")
-        got = dict(scope["headers"]).get(b"authorization", b"")
+        headers = dict(scope["headers"])
+        got = headers.get(b"authorization", b"")
         supplied = got[7:] if got[:7].lower() == b"bearer " else b""
         name = None
         for n, t in TOKENS.items():  # compare against every token; no early exit
@@ -509,7 +522,26 @@ class BearerAuth:
         if name is None:
             return await self._reply(send, 401, b"unauthorized", [(b"www-authenticate", b"Bearer")])
         _caller.set(name)
-        return await self.app(scope, receive, send)
+        sid = headers.get(b"mcp-session-id")
+        if sid is not None:
+            if self.owners.get(sid) != name:
+                print(f"SESSION caller={name} result=refused reason=not the session owner", flush=True)
+                return await self._reply(send, 404, b"session not found")
+            await self.app(scope, receive, send)
+            if scope.get("method") == "DELETE":
+                self.owners.pop(sid, None)
+            return
+
+        async def record_new_session(message):
+            if message["type"] == "http.response.start":
+                new = dict(message.get("headers", [])).get(b"mcp-session-id")
+                if new is not None:
+                    self.owners[new] = name
+                    while len(self.owners) > MAX_SESSIONS:
+                        self.owners.popitem(last=False)
+            await send(message)
+
+        return await self.app(scope, receive, record_new_session)
 
     @staticmethod
     async def _reply(send, status, body, extra=()):
