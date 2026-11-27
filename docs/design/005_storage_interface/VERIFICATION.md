@@ -1,6 +1,6 @@
 # 005 Storage interface: verification
 
-Run on the Ubuntu execution host (5.7 GB RAM, 4 threads). Stack: `infra/compose.yaml` (graphdb, ingestion, mcp). Test database: a throwaway Neo4j 5.26 on port 27687.
+Run on the test host (5.7 GB RAM, 4 threads). Stack: `infra/compose.yaml` (graphdb, ingestion, mcp). Test database: a throwaway Neo4j 5.26 on port 27687.
 
 ## 1. Parity with the MCP baseline (requirement R6)
 

@@ -1,6 +1,6 @@
 # 005 Storage interface: requirements
 
-Status: accepted for implementation. Baseline evidence: `validation-logs/golden-before` on the Ubuntu host (13 outputs, byte-stable across two runs).
+Status: accepted for implementation. Baseline evidence: a golden set of 13 MCP outputs, byte-stable across two runs.
 
 ## Goal
 

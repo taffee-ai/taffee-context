@@ -113,7 +113,7 @@ Look for `semanticLayerState` in the response. If it's not `ready`, semantic sea
 
 ### What to Do If `building` or `null`
 
-1. Check ingestion logs: `docker logs taffee-embed-worker` (on Ubuntu host)
+1. Check ingestion logs: `docker logs taffee-embed-worker` (on the host running the ingestion service)
 2. Wait for completion (typically 5–30 minutes for 2K-node repos)
 3. Verify ingestion: `taffee-mcp stats -r repo-name`
 4. If stuck, contact the operator

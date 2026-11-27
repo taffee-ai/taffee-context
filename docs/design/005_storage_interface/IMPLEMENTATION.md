@@ -1,10 +1,10 @@
 # 005 Storage interface: implementation status
 
-Status: implemented and verified on the Ubuntu execution host. See VERIFICATION.md for the evidence.
+Status: implemented and verified on the test host. See VERIFICATION.md for the evidence.
 
 | Step | Work | Status |
 |---|---|---|
-| 1 | Golden set captured: 13 MCP outputs, byte-stable across two runs (`validation-logs/golden-before`) | done |
+| 1 | Golden set captured: 13 MCP outputs, byte-stable across two runs | done |
 | 2 | Requirements, design, decisions, test plan | done |
 | 3 | Read methods in `contract.py` (`ReadStore`) and their Neo4j implementation in `neo4j_store.py` | done |
 | 4 | Read-only view `read_view.py` (`ReadOnlyView`) and `open_read_store()` in `storage/__init__.py` | done |
@@ -12,7 +12,6 @@ Status: implemented and verified on the Ubuntu execution host. See VERIFICATION.
 | 6 | MCP tools switched to the view: `server.py` uses `store.*` for every read; the `run()` helper is removed; the pack keeps its driver (phase 2) | done |
 | 7 | Parity (13 of 13 byte-identical), kill and restart twice | done: cycles 1 and 2 both 13 of 13 |
 | 8 | Existing suites: TypeScript 41 of 41; Python 31 of 31 | done |
-| 9 | Commit on the Ubuntu copies | see VERIFICATION.md |
 
 ## Source of each read (copied verbatim into the store)
 

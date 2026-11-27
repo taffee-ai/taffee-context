@@ -1,6 +1,6 @@
 # 005 Storage interface: test plan
 
-Run on the Ubuntu execution host, inside the base image, as for all other tests.
+Run on the test host, inside the base image, as for all other tests.
 
 ## Level 1: unit
 
@@ -20,7 +20,7 @@ Run against the throwaway database with a seeded fixture. The fixture is written
 
 ## Level 3: MCP parity (golden set)
 
-- Capture: `golden-before/` (already captured, 13 outputs, byte-stable).
+- Capture: the golden set (already captured, 13 outputs, byte-stable).
 - After the change: rebuild the MCP image, redeploy the stack, run the same 13 calls, compare bytes with `cmp`.
 - Pass: all 13 identical. Any difference is a failure unless recorded in DECISIONS.
 

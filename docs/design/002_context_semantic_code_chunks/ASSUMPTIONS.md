@@ -2,7 +2,7 @@
 
 Why this file exists: decisions in this feature rest on assumptions, some tested and some not. They are recorded here so an agent reading the code or the design can tell what was assumed, where it came from, and whether it has been verified. Evidence comes from `docs/design/verification.md`.
 
-**Maintained by**: The reviewer only. **Last updated**: 2026-11-23
+**Last updated**: 2026-11-23
 
 Status: ✅ Verified · 🟡 Partly verified · ❔ Unverified · 🔴 Invalidated or known to fail · ⚪ Owner decision. Test-host numbers (speed, memory) describe an old weak test laptop and are never production benchmarks.
 

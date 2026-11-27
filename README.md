@@ -125,6 +125,8 @@ The tests and the service are run on the execution host, in the container descri
 - [Verification](docs/design/verification.md): evidence from remote runs.
 - [Ingestion code notes](context/README.md).
 
+To report a vulnerability, see [SECURITY.md](SECURITY.md).
+
 ## Licence
 
 Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
